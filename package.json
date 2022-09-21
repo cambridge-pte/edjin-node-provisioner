@@ -1,0 +1,26 @@
+{
+  "name": "edjin-node-provisioner",
+  "version": "1.0.0",
+  "description": "A script for provisioning accounts to edjin",
+  "main": "app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cambridge-pte/edjin-node-provisioner.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cambridge-pte/edjin-node-provisioner/issues"
+  },
+  "homepage": "https://github.com/cambridge-pte/edjin-node-provisioner#readme",
+  "dependencies": {
+    "@types/node": "^18.7.18",
+    "node-xlsx": "^0.21.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.3"
+  }
+}
