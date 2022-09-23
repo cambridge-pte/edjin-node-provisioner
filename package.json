@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "description": "A script for provisioning accounts to edjin",
   "main": "app.ts",
+  "contributors": [
+    {
+      "name": "Kirk Lee Tade",
+      "email": "kirk.tade@cambridge.org"
+    },
+    {
+      "name": "Sharrena Mae Camus",
+      "email": "scamus@cambridge.org"
+    }
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
