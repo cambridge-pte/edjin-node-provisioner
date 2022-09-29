@@ -16,13 +16,11 @@ import xlsx from 'node-xlsx';
 import { 
   User as UserModel, 
   Class as ClassModel,
-  School as SchoolModel,
 } from 'edjin-node-sdk'
 import { readFileSync } from 'fs';
 import * as path from 'path';
 const userModel = new UserModel()
 const classModel = new ClassModel()
-const schoolModel = new SchoolModel()
 const FILENAME: string = 'C5_provisioning-735-QA.xlsx';
 
 const UID: number = 0
