@@ -44,7 +44,7 @@ async function parseExcel(): Promise<void> {
   let userObj: User[] = [];
   let count: number = 0;
   
-  const users = workSheetsFromBuffer.forEach(element => {
+    workSheetsFromBuffer.forEach(element => {
       const elementData: any[] = element.data
 
       elementData.forEach((el, i) => {
