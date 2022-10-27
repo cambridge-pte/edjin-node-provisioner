@@ -75,7 +75,6 @@ async function parseExcel(): Promise<void> {
             classCodes: classKey
           }
         }
-        console.log(userData)
         userObj.push(userData);
         count++;
       })
