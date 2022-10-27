@@ -21,7 +21,7 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 const userModel = new UserModel()
 const classModel = new ClassModel()
-const FILENAME: string = 'C5_provisioning-735-QA.xlsx';
+const FILENAME: string = 'auto accounts provisioning - ejdin - stg.xlsx';
 
 const UID: number = 0
 const EMAIL: number = 1
@@ -44,7 +44,7 @@ async function parseExcel(): Promise<void> {
   let userObj: User[] = [];
   let count: number = 0;
   
-  workSheetsFromBuffer.forEach(element => {
+  const users = workSheetsFromBuffer.forEach(element => {
       const elementData: any[] = element.data
 
       elementData.forEach((el, i) => {
@@ -64,18 +64,18 @@ async function parseExcel(): Promise<void> {
 
         userData = {
           data: {
-            userUuid: el[UID]?.trim(),
-            email: el[EMAIL]?.trim(),
-            username: el[EMAIL]?.trim(),
-            firstName: el[FIRST_NAME]?.trim(),
-            lastName: el[LAST_NAME]?.trim(),
-            countryCode: el[COUNTRY_CODE]?.trim().toUpperCase(),
-            subscriberType: el[USER_ROLE]?.trim().toUpperCase(),
+            userUuid: el[UID]?.toString().trim(),
+            email: el[EMAIL]?.toString().trim(),
+            username: el[EMAIL]?.toString().trim(),
+            firstName: el[FIRST_NAME]?.toString().trim(),
+            lastName: el[LAST_NAME]?.toString().trim(),
+            countryCode: el[COUNTRY_CODE]?.toString().trim().toUpperCase(),
+            subscriberType: el[USER_ROLE]?.toString().trim().toUpperCase(),
             brandCode: 'IGCSE',
             classCodes: classKey
           }
         }
-
+        console.log(userData)
         userObj.push(userData);
         count++;
       })
@@ -93,6 +93,7 @@ async function parseExcel(): Promise<void> {
 
 async function provisionAccounts(userObj: User[]){
   try {
+    console.log('CREATING ACCOUNTS')
     const accountCreation = userObj.map(async (user: any) => {
       const response = await userModel.createUser(user.data);
       if(response.success || response.code === 'DUPLICATE_USERNAME'){
@@ -103,11 +104,12 @@ async function provisionAccounts(userObj: User[]){
         accountSuccessFail++
         console.log(user.data.firstName + ' ' + user.data.lastName)
         console.log('\x1b[31m%s\x1b[0m', 'ACCOUNT CREATION: ERROR')
+        console.log('\x1b[31m%s\x1b[0m', 'Reason: '+ response.message)
       }
       return response 
     })
     await Promise.all(accountCreation);
-
+    console.log('STARTING ENROLLMENT')
     const classEnrollment = userObj.map(async (user: any) => {
 
       const classCodes = user.data.classCodes.map(async (code: any) => {
@@ -122,6 +124,7 @@ async function provisionAccounts(userObj: User[]){
         classAddFail++
         console.log(user.data.firstName + ' ' + user.data.lastName)
         console.log('\x1b[31m%s\x1b[0m', 'CLASS ENROLLMENT: ERROR')
+        console.log('\x1b[31m%s\x1b[0m', 'Reason: '+ classesResult.message)
       }else{
         classAddSuccess++
         console.log(user.data.firstName + ' ' + user.data.lastName)
@@ -129,7 +132,6 @@ async function provisionAccounts(userObj: User[]){
       }
     })
     await Promise.all(classEnrollment);
-
   } catch (error) {
     console.log('error at provisionAccounts >> ', error);
   }
